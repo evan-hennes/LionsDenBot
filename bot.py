@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 from datetime import timedelta
 
@@ -12,12 +13,35 @@ intents.message_content = True
 intents.members = True
 
 # setup bot command prefixes
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='>', intents=intents)
 
+# slash command definitions
+@bot.tree.command(
+	name='ping',
+    description='Pings Bot to ensure it is working'
+)
+async def ping_bot(interaction):
+    await interaction.response.send_message(f'Pong!\nLatency: **{bot.latency * 1000}**ms')
+# end def ping_bot
+
+@bot.tree.command(
+	name='faq',
+    description='Links to certain FAQs',
+    guild=discord.Object(id=974038998416781372)
+)
+async def faq(interaction, arg : str):
+    if arg == 'Eucharistic Adoration':
+        await interaction.response.send_mssage('https://discord.com/channels/974038998416781372/1332210521251905586/1332210524632649791')
+    else:
+        await interaction.response.send_message('Invalid Input - Please Try Again')
+    # end if/else logic
+# end def faq
+    
 # bot functions
 @bot.event
 async def on_ready():
-    print(f'get ready dawit')
+    await bot.tree.sync()
+    print(f'Ready!')
 # end def on_ready()
 
 @bot.event
