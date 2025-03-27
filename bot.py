@@ -67,6 +67,8 @@ async def faq_autocomplete(interaction, curr : str) -> List[app_commands.Choice[
 # bot functions
 @bot.event
 async def on_ready():
+    bot.tree.add_command(ping_bot)
+    bot.tree.add_command(faq)
     await bot.tree.sync()
     print(f'Ready!')
 # end def on_ready()
